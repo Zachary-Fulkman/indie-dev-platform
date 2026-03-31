@@ -16,5 +16,16 @@ namespace IndieDevPlatform.Api.Data
         public DbSet<Project> Projects { get; set; }
         public DbSet<Devlog> Devlogs { get; set; }
         public DbSet<CollaborationRequest> CollaborationRequests { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<CollaborationRequest>()
+                .HasOne(cr => cr.User)
+                .WithMany()
+                .HasForeignKey(cr => cr.UserId)
+                .OnDelete(DeleteBehavior.NoAction);
+        }
     }
 }
